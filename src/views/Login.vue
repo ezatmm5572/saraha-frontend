@@ -10,15 +10,55 @@ const form = reactive({
     password: ""
 })
 
+const errors = reactive({
+    email: "",
+    password: ""
+})
+
 const loading = ref(false)
 const error = ref("")
 
+const validate = () => {
+    let isValid = true
+
+    errors.email = ""
+    errors.password = ""
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+    if (!form.email.trim()) {
+        errors.email = "Email is required"
+        isValid = false
+    } else if (!emailRegex.test(form.email.trim())) {
+        errors.email = "Please enter a valid email address"
+        isValid = false
+    }
+
+    if (!form.password) {
+        errors.password = "Password is required"
+        isValid = false
+    } else if (form.password.length < 8) {
+        errors.password = "Password must be at least 8 characters"
+        isValid = false
+    }
+
+    return isValid
+}
+
 const submit = async () => {
-    loading.value = true
     error.value = ""
 
+    if (!validate()) {
+        return
+    }
+
+    loading.value = true
+
     try {
-        const { data } = await backend.signIn(form)
+        const { data } = await backend.signIn({
+            email: form.email.trim().toLowerCase(),
+            password: form.password
+        })
 
         const token = data?.data?.token
 
@@ -29,6 +69,7 @@ const submit = async () => {
         localStorage.setItem("access_token", token)
 
         const profileResponse = await backend.getProfile()
+
         const user = profileResponse.data?.data?.user
 
         if (user) {
@@ -67,6 +108,7 @@ const loginWithGoogle = async (response) => {
         localStorage.setItem("access_token", token)
 
         const profileResponse = await backend.getProfile()
+
         const user = profileResponse.data?.data?.user
 
         if (user) {
@@ -144,7 +186,10 @@ const loginWithGoogle = async (response) => {
                     {{ error }}
                 </div>
 
-                <form @submit.prevent="submit">
+                <form
+                    @submit.prevent="submit"
+                    novalidate
+                >
 
                     <div class="mb-3">
 
@@ -156,9 +201,16 @@ const loginWithGoogle = async (response) => {
                             v-model="form.email"
                             type="email"
                             class="form-control"
+                            :class="{ 'is-invalid': errors.email }"
                             autocomplete="email"
-                            required
                         >
+
+                        <div
+                            v-if="errors.email"
+                            class="invalid-feedback"
+                        >
+                            {{ errors.email }}
+                        </div>
 
                     </div>
 
@@ -172,9 +224,16 @@ const loginWithGoogle = async (response) => {
                             v-model="form.password"
                             type="password"
                             class="form-control"
+                            :class="{ 'is-invalid': errors.password }"
                             autocomplete="current-password"
-                            required
                         >
+
+                        <div
+                            v-if="errors.password"
+                            class="invalid-feedback"
+                        >
+                            {{ errors.password }}
+                        </div>
 
                     </div>
 
@@ -200,9 +259,11 @@ const loginWithGoogle = async (response) => {
                 </div>
 
                 <div class="d-flex justify-content-center">
+
                     <GoogleLogin
                         :callback="loginWithGoogle"
                     />
+
                 </div>
 
                 <p class="text-center text-secondary mt-4">
