@@ -7,11 +7,16 @@ const user = JSON.parse(localStorage.getItem("user") || "{}")
 
 <template>
     <div class="layout">
+
         <AppSidebar />
 
         <main class="main">
+
             <header class="topbar">
-                <div>
+
+                <MobileNav />
+
+                <div class="welcome-section">
                     <div class="fw-bold fs-5">
                         Welcome, {{ user.firstName || "Friend" }} 👋
                     </div>
@@ -22,15 +27,16 @@ const user = JSON.parse(localStorage.getItem("user") || "{}")
                 </div>
 
                 <div class="avatar">
-                    {{ (user.firstName || "U").slice(0,1).toUpperCase() }}
+                    {{ (user.firstName || "U").slice(0, 1).toUpperCase() }}
                 </div>
+
             </header>
 
             <div class="content">
                 <slot />
             </div>
+
         </main>
 
-        <MobileNav />
     </div>
 </template>
