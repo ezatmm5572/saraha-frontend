@@ -39,7 +39,6 @@ const submit = async () => {
         router.push("/dashboard")
 
     } catch (err) {
-
         error.value =
             err.response?.data?.error ||
             err.response?.data?.message ||
@@ -51,13 +50,11 @@ const submit = async () => {
     }
 }
 
-
 const loginWithGoogle = async (response) => {
     loading.value = true
     error.value = ""
 
     try {
-
         const { data } = await backend.signUpWithGoogle({
             idToken: response.credential
         })
@@ -81,11 +78,9 @@ const loginWithGoogle = async (response) => {
         router.push("/dashboard")
 
     } catch (err) {
-
         error.value =
             err.response?.data?.error ||
             err.response?.data?.message ||
-            err.message ||
             err.message ||
             "Google login failed"
 
@@ -94,7 +89,6 @@ const loginWithGoogle = async (response) => {
     }
 }
 </script>
-
 
 <template>
 
@@ -113,18 +107,15 @@ const loginWithGoogle = async (response) => {
                 Saraha
             </RouterLink>
 
-
             <h1 class="display-3 fw-bold">
                 Welcome back.
             </h1>
-
 
             <p class="text-white-50 fs-5">
                 Your anonymous messages and AI insights are waiting for you.
             </p>
 
         </section>
-
 
         <section class="auth-main">
 
@@ -141,16 +132,13 @@ const loginWithGoogle = async (response) => {
                     Saraha
                 </RouterLink>
 
-
                 <h2 class="fw-bold">
                     Sign in
                 </h2>
 
-
                 <p class="text-secondary">
                     Welcome back to your honest space.
                 </p>
-
 
                 <div
                     v-if="error"
@@ -158,7 +146,6 @@ const loginWithGoogle = async (response) => {
                 >
                     {{ error }}
                 </div>
-
 
                 <form @submit.prevent="submit">
 
@@ -177,7 +164,6 @@ const loginWithGoogle = async (response) => {
 
                     </div>
 
-
                     <div class="mb-4">
 
                         <label class="form-label">
@@ -193,7 +179,6 @@ const loginWithGoogle = async (response) => {
 
                     </div>
 
-
                     <button
                         class="btn btn-brand w-100"
                         :disabled="loading"
@@ -202,9 +187,6 @@ const loginWithGoogle = async (response) => {
                     </button>
 
                 </form>
-
-
-                <!-- Divider -->
 
                 <div class="position-relative my-4">
 
@@ -218,17 +200,17 @@ const loginWithGoogle = async (response) => {
 
                 </div>
 
+                <div class="text-center">
 
-                <!-- Google Login -->
-
-                <div class="d-flex justify-content-center">
+                    <p class="text-danger mb-3">
+                        Google Login Test
+                    </p>
 
                     <GoogleLogin
                         :callback="loginWithGoogle"
                     />
 
                 </div>
-
 
                 <p class="text-center text-secondary mt-4">
 
