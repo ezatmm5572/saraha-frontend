@@ -29,7 +29,6 @@ const submit = async () => {
         localStorage.setItem("access_token", token)
 
         const profileResponse = await backend.getProfile()
-
         const user = profileResponse.data?.data?.user
 
         if (user) {
@@ -68,7 +67,6 @@ const loginWithGoogle = async (response) => {
         localStorage.setItem("access_token", token)
 
         const profileResponse = await backend.getProfile()
-
         const user = profileResponse.data?.data?.user
 
         if (user) {
@@ -91,7 +89,6 @@ const loginWithGoogle = async (response) => {
 </script>
 
 <template>
-
     <div class="auth">
 
         <section class="auth-side">
@@ -159,6 +156,7 @@ const loginWithGoogle = async (response) => {
                             v-model="form.email"
                             type="email"
                             class="form-control"
+                            autocomplete="email"
                             required
                         >
 
@@ -174,6 +172,7 @@ const loginWithGoogle = async (response) => {
                             v-model="form.password"
                             type="password"
                             class="form-control"
+                            autocomplete="current-password"
                             required
                         >
 
@@ -200,16 +199,10 @@ const loginWithGoogle = async (response) => {
 
                 </div>
 
-                <div class="text-center">
-
-                    <p class="text-danger mb-3">
-                        Google Login Test
-                    </p>
-
+                <div class="d-flex justify-content-center">
                     <GoogleLogin
                         :callback="loginWithGoogle"
                     />
-
                 </div>
 
                 <p class="text-center text-secondary mt-4">
@@ -230,5 +223,4 @@ const loginWithGoogle = async (response) => {
         </section>
 
     </div>
-
 </template>
